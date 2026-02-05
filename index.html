@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>喵星人圖鑑 - 動森風格</title>
-    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --ac-green: #78d2a0;
@@ -17,73 +17,38 @@
             background-color: var(--ac-beige);
             background-image: radial-gradient(var(--ac-yellow) 2px, transparent 2px);
             background-size: 30px 30px;
-            font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
+            font-family: 'Noto Sans TC', 'ZCOOL KuaiLe', sans-serif;
             color: var(--ac-brown);
             margin: 0;
             padding: 20px;
+            line-height: 1.6;
         }
-        .header {
-            background-color: var(--ac-green);
-            padding: 20px;
-            border-radius: 50px;
-            text-align: center;
-            border: 8px solid white;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            position: relative;
+        .header h1 {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            margin: 0;
+            color: white;
+            text-shadow: 2px 2px 0 var(--ac-leaf);
         }
-        .header::after {
-            content: '🍃';
-            position: absolute;
-            right: 20px;
-            top: 20px;
-            font-size: 2rem;
+        .cat-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--ac-brown);
         }
-        h1 { margin: 0; color: white; text-shadow: 2px 2px 0 var(--ac-leaf); }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+        .cat-info {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: #7d5e53;
         }
-        .card {
-            background: white;
-            border-radius: 30px;
-            padding: 15px;
-            text-align: center;
-            border: 5px solid var(--ac-green);
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
-        .card:hover { transform: scale(1.05) rotate(2deg); }
-        .cat-avatar {
-            width: 150px;
-            height: 150px;
-            background: var(--ac-yellow);
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
-            border: 4px solid var(--ac-brown);
-            overflow: hidden;
-        }
-        .cat-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .cat-name { font-size: 1.5rem; font-weight: bold; margin-bottom: 5px; }
-        .cat-info { font-size: 0.9rem; color: #666; }
         .speech-bubble {
             background: white;
             border-radius: 20px;
-            padding: 10px;
+            padding: 12px;
             margin-top: 10px;
             border: 2px solid var(--ac-brown);
             position: relative;
+            font-size: 0.9rem;
+            font-weight: 400;
         }
         footer { text-align: center; margin-top: 50px; font-size: 1.2rem; }
     </style>
