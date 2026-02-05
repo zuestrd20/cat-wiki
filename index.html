@@ -17,40 +17,114 @@
             background-color: var(--ac-beige);
             background-image: radial-gradient(var(--ac-yellow) 2px, transparent 2px);
             background-size: 30px 30px;
-            font-family: 'Noto Sans TC', 'ZCOOL KuaiLe', sans-serif;
+            font-family: 'Noto Sans TC', sans-serif;
             color: var(--ac-brown);
             margin: 0;
             padding: 20px;
             line-height: 1.6;
+        }
+        .header {
+            background-color: var(--ac-green);
+            padding: 20px;
+            border-radius: 50px;
+            text-align: center;
+            border: 8px solid white;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .header::after {
+            content: '🍃';
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2rem;
         }
         .header h1 {
             font-family: 'ZCOOL KuaiLe', cursive;
             margin: 0;
             color: white;
             text-shadow: 2px 2px 0 var(--ac-leaf);
+            font-size: 2.5rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 35px;
+            padding: 20px;
+            text-align: center;
+            border: 6px solid var(--ac-green);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--ac-leaf);
+        }
+        .card:hover {
+            transform: scale(1.03) rotate(1deg);
+            box-shadow: 0 6px 0 var(--ac-leaf);
+        }
+        .cat-avatar {
+            width: 160px;
+            height: 160px;
+            background: var(--ac-yellow);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 5px solid var(--ac-brown);
+            overflow: hidden;
+        }
+        .cat-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         .cat-name {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: var(--ac-brown);
         }
         .cat-info {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 400;
             color: #7d5e53;
+            margin-bottom: 10px;
         }
         .speech-bubble {
-            background: white;
+            background: #fff9e6;
             border-radius: 20px;
             padding: 12px;
             margin-top: 10px;
             border: 2px solid var(--ac-brown);
             position: relative;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 400;
+            color: #5d4037;
         }
-        footer { text-align: center; margin-top: 50px; font-size: 1.2rem; }
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 0 10px 10px 10px;
+            border-style: solid;
+            border-color: transparent transparent var(--ac-brown) transparent;
+        }
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 1.3rem;
+            padding-bottom: 40px;
+            font-family: 'ZCOOL KuaiLe', cursive;
+        }
     </style>
 </head>
 <body>
