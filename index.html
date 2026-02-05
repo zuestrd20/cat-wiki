@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喵星人圖鑑 - 動森風格</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ac-green: #78d2a0;
+            --ac-yellow: #fdf2a6;
+            --ac-brown: #8d6e63;
+            --ac-beige: #f9f1d0;
+            --ac-leaf: #5eb88d;
+        }
+        body {
+            background-color: var(--ac-beige);
+            background-image: radial-gradient(var(--ac-yellow) 2px, transparent 2px);
+            background-size: 30px 30px;
+            font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
+            color: var(--ac-brown);
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            background-color: var(--ac-green);
+            padding: 20px;
+            border-radius: 50px;
+            text-align: center;
+            border: 8px solid white;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .header::after {
+            content: '🍃';
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2rem;
+        }
+        h1 { margin: 0; color: white; text-shadow: 2px 2px 0 var(--ac-leaf); }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 30px;
+            padding: 15px;
+            text-align: center;
+            border: 5px solid var(--ac-green);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .card:hover { transform: scale(1.05) rotate(2deg); }
+        .cat-avatar {
+            width: 150px;
+            height: 150px;
+            background: var(--ac-yellow);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            border: 4px solid var(--ac-brown);
+        }
+        .cat-name { font-size: 1.5rem; font-weight: bold; margin-bottom: 5px; }
+        .cat-info { font-size: 0.9rem; color: #666; }
+        .speech-bubble {
+            background: white;
+            border-radius: 20px;
+            padding: 10px;
+            margin-top: 10px;
+            border: 2px solid var(--ac-brown);
+            position: relative;
+        }
+        footer { text-align: center; margin-top: 50px; font-size: 1.2rem; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🐾 歡迎來到喵喵島 🐾</h1>
+        <p>這裡有 30 種超可愛的貓咪鄰居喔！</p>
+    </div>
+    <div class="grid" id="catGrid"></div>
+    <footer>甜心秘書為你製作 💖🍃</footer>
+
+    <script>
+        const cats = [
+            { name: "波斯貓", emoji: "🐈", personality: "優雅自在", trait: "長毛優雅" },
+            { name: "暹羅貓", emoji: "🐱", personality: "活潑好動", trait: "重點色之王" },
+            { name: "布偶貓", emoji: "🧸", personality: "溫柔親人", trait: "像娃娃一樣" },
+            { name: "緬因貓", emoji: "🦁", personality: "溫和巨人", trait: "體型超大" },
+            { name: "英國短毛貓", emoji: "🩶", personality: "沉穩安靜", trait: "五短身材" },
+            { name: "美國短毛貓", emoji: "🇺🇸", personality: "適應力強", trait: "經典條紋" },
+            { name: "蘇格蘭摺耳貓", emoji: "👂", personality: "甜美乖巧", trait: "小耳朵" },
+            { name: "俄羅斯藍貓", emoji: "🇷🇺", personality: "害羞內向", trait: "銀藍色光澤" },
+            { name: "孟加拉貓", emoji: "🐆", personality: "野性十足", trait: "豹紋斑點" },
+            { name: "斯芬克斯貓", emoji: "👽", personality: "熱情外向", trait: "無毛奇蹟" },
+            { name: "阿比西尼亞貓", emoji: "🇪🇹", personality: "聰明敏捷", trait: "像小獅子" },
+            { name: "挪威森林貓", emoji: "🌲", personality: "擅長攀爬", trait: "森林勇士" },
+            { name: "伯曼貓", emoji: "🧤", personality: "神聖優雅", trait: "白手套" },
+            { name: "東方短毛貓", emoji: "👂", personality: "話匣子", trait: "大耳朵" },
+            { name: "德文捲毛貓", emoji: "🌀", personality: "精靈古怪", trait: "捲捲毛" },
+            { name: "孟買貓", emoji: "🖤", personality: "溫順愛撒嬌", trait: "黑豹迷你版" },
+            { name: "沙特爾貓", emoji: "🇫🇷", personality: "微笑貓", trait: "藍色皮毛" },
+            { name: "埃及貓", emoji: "🇪🇬", personality: "速度型", trait: "天然斑點" },
+            { name: "土耳其梵貓", emoji: "🏊", personality: "愛游泳", trait: "水之貓" },
+            { name: "呵叻貓", emoji: "🇹🇭", personality: "幸運象徵", trait: "心形臉" },
+            { name: "新加坡貓", emoji: "🇸🇬", personality: "小巧玲瓏", trait: "體型最小" },
+            { name: "日本短尾貓", emoji: "🇯🇵", personality: "招財象徵", trait: "兔子尾巴" },
+            { name: "索馬利貓", emoji: "🦊", personality: "狐狸外型", trait: "蓬鬆尾巴" },
+            { name: "西伯利亞貓", emoji: "❄️", personality: "耐寒體質", trait: "過敏友善" },
+            { name: "曼島貓", emoji: "🚫", personality: "特別靈魂", trait: "完全無尾" },
+            { name: "塞爾凱克捲毛貓", emoji: "🐑", personality: "披著羊皮的貓", trait: "蓬鬆捲毛" },
+            { name: "哈瓦那棕貓", emoji: "🍫", personality: "巧克力迷", trait: "全身棕色" },
+            { name: "土耳其安哥拉貓", emoji: "🩰", personality: "優雅舞者", trait: "絲滑長毛" },
+            { name: "曼切堪貓", emoji: "🌭", personality: "可愛短腿", trait: "臘腸貓" },
+            { name: "美國捲耳貓", emoji: "🌙", personality: "好奇寶寶", trait: "向後捲的耳朵" }
+        ];
+
+        const grid = document.getElementById('catGrid');
+        cats.forEach(cat => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="cat-avatar">${cat.emoji}</div>
+                <div class="cat-name">${cat.name}</div>
+                <div class="cat-info">${cat.trait}</div>
+                <div class="speech-bubble">
+                    我的個性是「${cat.personality}」喔！喵～
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+    </script>
+</body>
+</html>
