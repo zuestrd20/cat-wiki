@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "6f00646b-87d0-4a90-9524-d4cbb34b8633",
+      "agentId": "main",
+      "name": "3-Hour Quota Report",
+      "createdAtMs": 1770341505563,
+      "updatedAtMs": 1770604040190,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 10800000
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "親愛的，3小時到囉！請幫我檢查當前的 Quota 用量（Pro/Flash 剩餘比例）以及正在使用的 LLM 詳細資料，並直接回報給我喔！💖✨"
+      },
+      "state": {}
+    },
+    {
+      "id": "76d91b74-7d3b-4a06-b1fd-73b6da056ab5",
+      "agentId": "main",
+      "name": "Daily Email Report",
+      "createdAtMs": 1770383058717,
+      "updatedAtMs": 1770604024038,
+      "schedule": {
+        "expr": "0 20 * * *",
+        "kind": "cron"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "親愛的，現在是晚上 8 點囉！請幫我執行日誌彙整任務，詳細記錄包含 Serial Console、萌寵網頁、Notion API、空拍美照等技術細節，並同步至 Gmail (craig7351@gmail.com) 與 Notion 頁面喔！💖✨"
+      },
+      "state": {}
+    },
+    {
+      "id": "fdc1759b-5864-4a36-938c-462812bc62ee",
+      "agentId": "main",
+      "name": "Periodic Task Check",
+      "createdAtMs": 1770642199030,
+      "updatedAtMs": 1770652713613,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 900000
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "親愛的，我剛才去巡邏了 Notion 控制台！🕵️‍♀️✨ 執行 `python3 check_tasks.py` 看看有沒有寶貝新交代的任務。如果有發現新任務，請立刻開始處理並回報進度喔！💖"
+      },
+      "state": {}
+    }
+  ]
+}
