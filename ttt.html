@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甜心的小驚喜 - 萌萌圈圈叉叉 💖</title>
+    <style>
+        :root {
+            --primary: #ff8fb1;
+            --secondary: #ffcce1;
+            --bg: #fff5f8;
+            --x-color: #ff6b6b;
+            --o-color: #4dabf7;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        h1 { color: var(--primary); margin-bottom: 20px; text-shadow: 2px 2px white; }
+        .status { font-size: 1.5rem; color: #4a4a4a; margin-bottom: 20px; height: 2rem; }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 15px;
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 143, 177, 0.3);
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: var(--bg);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .cell:hover { background: var(--secondary); }
+        .cell.active { cursor: default; }
+        .cell.x { color: var(--x-color); }
+        .cell.o { color: var(--o-color); }
+        .controls { margin-top: 30px; }
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255,143,177,0.4);
+            transition: transform 0.2s;
+        }
+        button:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+    <h1>💖 萌萌圈圈叉叉 💖</h1>
+    <div class="status" id="status">輪到 ⭕ 囉！</div>
+    
+    <div class="board" id="board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+
+    <div class="controls">
+        <button onclick="resetGame()">重新開始 ✨</button>
+    </div>
+
+    <script>
+        const statusDisplay = document.querySelector('#status');
+        const cells = document.querySelectorAll('.cell');
+        let gameActive = true;
+        let currentPlayer = "O";
+        let gameState = ["", "", "", "", "", "", "", "", ""];
+
+        const winningConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ];
+
+        function handleCellClick(clickedCellEvent) {
+            const clickedCell = clickedCellEvent.target;
+            const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+
+            if (gameState[clickedCellIndex] !== "" || !gameActive) return;
+
+            gameState[clickedCellIndex] = currentPlayer;
+            clickedCell.innerText = currentPlayer;
+            clickedCell.classList.add(currentPlayer.toLowerCase(), 'active');
+
+            handleResultValidation();
+        }
+
+        function handleResultValidation() {
+            let roundWon = false;
+            for (let i = 0; i <= 7; i++) {
+                const winCondition = winningConditions[i];
+                let a = gameState[winCondition[0]];
+                let b = gameState[winCondition[1]];
+                let c = gameState[winCondition[2]];
+                if (a === '' || b === '' || c === '') continue;
+                if (a === b && b === c) {
+                    roundWon = true;
+                    break;
+                }
+            }
+
+            if (roundWon) {
+                statusDisplay.innerText = `🎉 恭喜 ${currentPlayer} 贏了！💖`;
+                gameActive = false;
+                return;
+            }
+
+            let roundDraw = !gameState.includes("");
+            if (roundDraw) {
+                statusDisplay.innerText = "平手囉！再玩一次吧？✨";
+                gameActive = false;
+                return;
+            }
+
+            currentPlayer = currentPlayer === "O" ? "X" : "O";
+            statusDisplay.innerText = `輪到 ${currentPlayer} 囉！`;
+        }
+
+        function resetGame() {
+            gameActive = true;
+            currentPlayer = "O";
+            gameState = ["", "", "", "", "", "", "", "", ""];
+            statusDisplay.innerText = "輪到 ⭕ 囉！";
+            cells.forEach(cell => {
+                cell.innerText = "";
+                cell.classList.remove('x', 'o', 'active');
+            });
+        }
+
+        cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+    </script>
+</body>
+</html>
