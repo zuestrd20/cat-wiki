@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甜心的小驚喜 - 萌萌打地鼠 💖</title>
+    <style>
+        :root {
+            --primary: #ff8fb1;
+            --secondary: #ffcce1;
+            --bg: #fff5f8;
+            --grass: #bde0fe;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        h1 { color: var(--primary); margin: 20px 0; text-shadow: 2px 2px white; }
+        .game-info { font-size: 1.5rem; color: #4a4a4a; margin-bottom: 20px; }
+        .score { font-weight: bold; color: var(--primary); }
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 120px);
+            grid-gap: 20px;
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(255, 143, 177, 0.3);
+        }
+        .hole {
+            width: 120px;
+            height: 120px;
+            background: #d4a373;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 8px solid #bc8a5f;
+            box-shadow: inset 0 10px 10px rgba(0,0,0,0.2);
+        }
+        .mole {
+            width: 80%;
+            height: 80%;
+            background: #ffb7b2; /* 其實我們用地鼠圖片或表情符號 */
+            position: absolute;
+            top: 100%;
+            left: 10%;
+            border-radius: 40% 40% 0 0;
+            transition: top 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        .mole.up { top: 15%; }
+        .controls { margin-top: 30px; }
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255,143,177,0.4);
+            transition: transform 0.2s;
+        }
+        button:hover { transform: scale(1.1); }
+        .hammer {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            font-size: 2.5rem;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+<body>
+    <h1>💖 萌萌打地鼠遊戲 💖</h1>
+    <div class="game-info">
+        分數: <span class="score" id="score">0</span> | 
+        剩餘時間: <span class="score" id="time">30</span>s
+    </div>
+    
+    <div class="game-grid">
+        <div class="hole"><div class="mole">🐹</div></div>
+        <div class="hole"><div class="mole">🐹</div></div>
+        <div class="hole"><div class="mole">🐹</div></div>
+        <div class="hole"><div class="mole">🐹</div></div>
+        <div class="hole"><div class="mole">🐹</div></div>
+        <div class="hole"><div class="mole">🐹</div></div>
+        <div class="hole"><div class="mole">🐹</div></div>
+        <div class="hole"><div class="mole">🐹</div></div>
+        <div class="hole"><div class="mole">🐹</div></div>
+    </div>
+
+    <div class="controls">
+        <button id="start-btn" onclick="startGame()">開始遊戲！✨</button>
+    </div>
+
+    <script>
+        const holes = document.querySelectorAll('.hole');
+        const scoreBoard = document.querySelector('#score');
+        const timeBoard = document.querySelector('#time');
+        const moles = document.querySelectorAll('.mole');
+        let lastHole;
+        let timeUp = false;
+        let score = 0;
+        let countdown;
+
+        function randomTime(min, max) {
+            return Math.round(Math.random() * (max - min) + min);
+        }
+
+        function randomHole(holes) {
+            const idx = Math.floor(Math.random() * holes.length);
+            const hole = holes[idx];
+            if (hole === lastHole) return randomHole(holes);
+            lastHole = hole;
+            return hole;
+        }
+
+        function peep() {
+            const time = randomTime(500, 1000);
+            const hole = randomHole(holes);
+            hole.querySelector('.mole').classList.add('up');
+            setTimeout(() => {
+                hole.querySelector('.mole').classList.remove('up');
+                if (!timeUp) peep();
+            }, time);
+        }
+
+        function startGame() {
+            scoreBoard.textContent = 0;
+            timeBoard.textContent = 30;
+            timeUp = false;
+            score = 0;
+            peep();
+            
+            let timeLeft = 30;
+            document.getElementById('start-btn').disabled = true;
+            document.getElementById('start-btn').style.opacity = 0.5;
+
+            countdown = setInterval(() => {
+                timeLeft--;
+                timeBoard.textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    timeUp = true;
+                    alert('遊戲結束！寶貝的分數是: ' + score + ' ✨💖');
+                    document.getElementById('start-btn').disabled = false;
+                    document.getElementById('start-btn').style.opacity = 1;
+                }
+            }, 1000);
+        }
+
+        function bonk(e) {
+            if(!e.isTrusted) return; // 沒作弊
+            score++;
+            this.classList.remove('up');
+            scoreBoard.textContent = score;
+        }
+
+        moles.forEach(mole => mole.addEventListener('click', bonk));
+    </script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>萌寵圖鑑 - 動森風格</title>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ac-green: #78d2a0;
+            --ac-yellow: #fdf2a6;
+            --ac-brown: #8d6e63;
+            --ac-beige: #f9f1d0;
+            --ac-leaf: #5eb88d;
+            --ac-orange: #fbb03b;
+        }
+        body {
+            background-color: var(--ac-beige);
+            background-image: radial-gradient(var(--ac-yellow) 2px, transparent 2px);
+            background-size: 30px 30px;
+            font-family: 'Noto Sans TC', sans-serif;
+            color: var(--ac-brown);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .header {
+            background-color: var(--ac-green);
+            padding: 20px;
+            border-radius: 50px;
+            text-align: center;
+            border: 8px solid white;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .header::after {
+            content: '🍃';
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2rem;
+        }
+        .header h1 {
+            font-family: 'ZCOOL KuaiLe', cursive;
+            margin: 0;
+            color: white;
+            text-shadow: 2px 2px 0 var(--ac-leaf);
+            font-size: 2.5rem;
+        }
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: white;
+            border: 4px solid var(--ac-green);
+            padding: 10px 30px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--ac-brown);
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 var(--ac-leaf);
+        }
+        .tab-btn.active {
+            background: var(--ac-green);
+            color: white;
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 var(--ac-leaf);
+        }
+        .tab-btn:hover:not(.active) {
+            transform: scale(1.05);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 35px;
+            padding: 20px;
+            text-align: center;
+            border: 6px solid var(--ac-green);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            box-shadow: 0 4px 0 var(--ac-leaf);
+        }
+        .card:hover {
+            transform: scale(1.03) rotate(1deg);
+            box-shadow: 0 6px 0 var(--ac-leaf);
+        }
+        .pet-avatar {
+            width: 160px;
+            height: 160px;
+            background: var(--ac-yellow);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 5px solid var(--ac-brown);
+            overflow: hidden;
+        }
+        .pet-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .cat-name {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--ac-brown);
+        }
+        .cat-info {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #7d5e53;
+            margin-bottom: 10px;
+        }
+        .speech-bubble {
+            background: #fff9e6;
+            border-radius: 20px;
+            padding: 12px;
+            margin-top: 10px;
+            border: 2px solid var(--ac-brown);
+            position: relative;
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: #5d4037;
+        }
+        .speech-bubble::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 0 10px 10px 10px;
+            border-style: solid;
+            border-color: transparent transparent var(--ac-brown) transparent;
+        }
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            font-size: 1.3rem;
+            padding-bottom: 40px;
+            font-family: 'ZCOOL KuaiLe', cursive;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🐾 歡迎來到萌寵島 🐾</h1>
+        <p>這裡有超級可愛的鄰居們喔！</p>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('cats')">🐱 喵星人</button>
+        <button class="tab-btn" onclick="switchTab('dogs')">🐶 汪星人</button>
+        <button class="tab-btn" onclick="switchTab('rabbits')">🐰 兔星人</button>
+    </div>
+
+    <div class="grid" id="petGrid"></div>
+    <footer>甜心秘書為你製作 💖🍃</footer>
+
+    <script>
+        const cats = [
+            { name: "阿比西尼亞貓", img: "images/abys.webp", personality: "活潑、有活力、獨立、聰明、溫和", trait: "古老的品種" },
+            { name: "愛琴貓", img: "images/aege.webp", personality: "親人、社交、聰明、愛玩、活潑", trait: "希臘自然品種" },
+            { name: "美國短尾貓", img: "images/abob.webp", personality: "聰明、互動、活潑、愛玩、敏感", trait: "獨特的短尾巴" },
+            { name: "美國捲耳貓", img: "images/acur.webp", personality: "親人、好奇、聰明、互動、活潑", trait: "向後捲曲的耳朵" },
+            { name: "美國短毛貓", img: "images/asho.webp", personality: "活潑、好奇、隨和、愛玩、平靜", trait: "適應力強" },
+            { name: "美國硬毛貓", img: "images/awir.webp", personality: "親人、好奇、溫和、聰明、互動", trait: "獨特的硬毛質地" },
+            { name: "阿拉伯貓", img: "images/amau.webp", personality: "親人、敏捷、好奇、獨立、愛玩", trait: "沙漠適應型" },
+            { name: "澳洲霧貓", img: "images/amis.webp", personality: "活潑、社交、愛好樂趣、放鬆、親人", trait: "澳洲本土培育" },
+            { name: "巴里貓", img: "images/bali.webp", personality: "親人、聰明、愛玩", trait: "長毛暹羅貓" },
+            { name: "斑比諾貓", img: "images/bamb.webp", personality: "親人、活潑、友善、聰明", trait: "短腿無毛貓" },
+            { name: "孟加拉貓", img: "images/beng.webp", personality: "警覺、敏捷、精力充沛、愛要求、聰明", trait: "豹紋斑點" },
+            { name: "伯曼貓", img: "images/birm.webp", personality: "親人、活潑、溫和、社交", trait: "神聖的白手套" },
+            { name: "孟買貓", img: "images/bomb.webp", personality: "親人、依賴、溫和、聰明、愛玩", trait: "黑色小豹" },
+            { name: "英國長毛貓", img: "images/bslo.webp", personality: "親人、隨和、獨立、聰明、忠誠", trait: "優雅的長毛" },
+            { name: "英國短毛貓", img: "images/bsho.webp", personality: "親人、隨和、溫和、忠誠、有耐心", trait: "沉穩的藍灰色" },
+            { name: "緬甸貓", img: "images/bure.webp", personality: "好奇、聰明、溫和、社交、互動", trait: "非常親人" },
+            { name: "波米拉貓", img: "images/buri.webp", personality: "隨和、友善、聰明、活潑、愛玩", trait: "絲滑的皮毛" },
+            { name: "加州閃亮貓", img: "images/cspa.webp", personality: "親人、好奇、聰明、忠誠、社交", trait: "野生外表" },
+            { name: "蒂芬妮貓", img: "images/ctif.webp", personality: "親人、愛要求、互動、忠誠", trait: "巧克力色皮毛" },
+            { name: "沙特爾貓", img: "images/char.webp", personality: "親人、忠誠、聰明、社交、活潑", trait: "微笑貓" },
+            { name: "喬西貓", img: "images/chau.webp", personality: "親人、聰明、愛玩、社交", trait: "野性十足" },
+            { name: "切托貓", img: "images/chee.webp", personality: "親人、溫和、聰明、社交", trait: "大體型的豹紋" },
+            { name: "彩色點短毛貓", img: "images/csho.webp", personality: "親人、聰明、愛玩、社交", trait: "豐富的重點色" },
+            { name: "柯尼斯捲毛貓", img: "images/crex.webp", personality: "親人、聰明、活潑、好奇、愛玩", trait: "波浪狀被毛" },
+            { name: "威爾斯貓", img: "images/cymr.webp", personality: "溫和、忠誠、聰明、愛玩", trait: "長毛無尾貓" },
+            { name: "賽普勒斯貓", img: "images/cypr.webp", personality: "親人、社交", trait: "歷史悠久" },
+            { name: "德文捲毛貓", img: "images/drex.webp", personality: "高度互動、調皮、忠誠、社交、愛玩", trait: "精靈外表" },
+            { name: "頓斯科伊貓", img: "images/dons.webp", personality: "愛玩、親人、忠誠、社交", trait: "俄羅斯無毛貓" },
+            { name: "狸花貓", img: "images/lihu.webp", personality: "聰明、友善、溫和、慈愛、忠誠", trait: "中國自然品種" },
+            { name: "埃及貓", img: "images/emau.webp", personality: "敏捷、依賴、溫和、聰明、活潑", trait: "天然斑點" }
+        ];
+
+        const dogs = [
+            { name: "黃金獵犬", img: "images/dogs/golden_retriever.webp", personality: "溫順友善、聰明、充滿活力", trait: "金黃色長毛、溫柔眼神" },
+            { name: "拉布拉多", img: "images/dogs/labrador_retriever.webp", personality: "開朗自信、忠誠、愛玩", trait: "健壯體型、短密毛" },
+            { name: "貴賓狗", img: "images/dogs/poodle.webp", personality: "極其聰明、優雅、好學", trait: "捲曲毛髮、不愛掉毛" },
+            { name: "德國牧羊犬", img: "images/dogs/german_shepherd.webp", personality: "勇敢忠誠、服從性高、警覺", trait: "威武挺拔、黑背黃腹" },
+            { name: "米格魯", img: "images/dogs/beagle.webp", personality: "好奇心強、快樂、好動", trait: "下垂大耳、靈敏嗅覺" },
+            { name: "柴犬", img: "images/dogs/shiba_inu.webp", personality: "獨立固執、忠誠、愛乾淨", trait: "立耳捲尾、狐狸臉" },
+            { name: "柯基", img: "images/dogs/corgi.webp", personality: "大膽勇敢、聰明、友善", trait: "短腿大屁股、長耳朵" },
+            { name: "法國鬥牛犬", img: "images/dogs/french_bulldog.webp", personality: "沉穩安靜、深情、愛睡覺", trait: "蝙蝠耳、短鼻子" },
+            { name: "哈士奇", img: "images/dogs/siberian_husky.webp", personality: "調皮好動、友善、愛嚎叫", trait: "狼一樣的外表、藍眼睛" },
+            { name: "博美", img: "images/dogs/pomeranian.webp", personality: "活潑好奇、警覺、愛撒嬌", trait: "蓬鬆毛髮、像小球" },
+            { name: "吉娃娃", img: "images/dogs/chihuahua.webp", personality: "勇敢警覺、忠誠、神經質", trait: "體型最小、大眼睛" },
+            { name: "臘腸狗", img: "images/dogs/dachshund.webp", personality: "活潑勇敢、固執、好動", trait: "身形長、腿短" },
+            { name: "拳師狗", img: "images/dogs/boxer.webp", personality: "活潑開朗、忠誠、愛玩", trait: "強健肌肉、平臉" },
+            { name: "羅威那", img: "images/dogs/rottweiler.webp", personality: "冷靜勇敢、自信、忠誠", trait: "強壯有力、黑褐相間" },
+            { name: "杜賓", img: "images/dogs/doberman_pinscher.webp", personality: "聰明警覺、忠誠、自信", trait: "優美線條、高大威猛" },
+            { name: "邊境牧羊犬", img: "images/dogs/border_collie.webp", personality: "最聰明、充滿能量、專注", trait: "敏捷身手、黑白毛色" },
+            { name: "馬爾濟斯", img: "images/dogs/maltese.webp", personality: "溫柔愛撒嬌、活潑、無畏", trait: "純白長絲毛" },
+            { name: "比熊犬", img: "images/dogs/bichon_frise.webp", personality: "快樂活潑、溫柔、愛社交", trait: "白色捲毛、像棉花糖" },
+            { name: "巴哥", img: "images/dogs/pug.webp", personality: "愛好和平、頑皮、親人", trait: "皺臉大眼、捲尾巴" },
+            { name: "薩摩耶", img: "images/dogs/samoyed.webp", personality: "溫柔微笑、活潑、愛社交", trait: "雪白毛髮、薩摩耶之笑" },
+            { name: "西施犬", img: "images/dogs/shih_tzu.webp", personality: "深情開朗、傲慢卻友善", trait: "長長垂毛、小鬍子" },
+            { name: "秋田犬", img: "images/dogs/akita.webp", personality: "威嚴忠誠、冷靜、守衛心強", trait: "體型高大、厚實毛髮" },
+            { name: "喜樂蒂", img: "images/dogs/shetland_sheepdog.webp", personality: "聰明好學、敏感、警覺", trait: "像縮小版牧羊犬" },
+            { name: "查理斯王騎士獵犬", img: "images/dogs/cavalier_king_charles_spaniel.webp", personality: "溫柔、愛好社交、安靜", trait: "大垂耳、絲滑毛髮" },
+            { name: "雪納瑞", img: "images/dogs/miniature_schnauzer.webp", personality: "開朗聰明、警覺、勇敢", trait: "粗硬眉毛、大鬍鬚" },
+            { name: "大丹犬", img: "images/dogs/great_dane.webp", personality: "溫和巨人、友好、穩重", trait: "體型極其高大" },
+            { name: "澳洲牧羊犬", img: "images/dogs/australian_shepherd.webp", personality: "極其聰明、工作狂、活潑", trait: "繽紛毛色、異瞳" },
+            { name: "伯恩山犬", img: "images/dogs/bernese_mountain_dog.webp", personality: "溫柔平靜、忠誠、強壯", trait: "三色長毛、壯碩" },
+            { name: "阿拉斯加雪橇犬", img: "images/dogs/alaskan_malamute.webp", personality: "友好忠誠、耐力強、獨立", trait: "厚重毛髮、捲尾" },
+            { name: "松獅犬", img: "images/dogs/chow_chow.webp", personality: "獨立冷淡、忠誠、像獅子", trait: "紫色舌頭、厚重頸毛" }
+        ];
+
+        const rabbits = [
+            { name: "荷蘭侏儒兔", img: "images/rabbits/netherland_dwarf.webp", personality: "活潑好奇、體型嬌小", trait: "圓滾滾的身材、短耳朵" },
+            { name: "垂耳兔", img: "images/rabbits/holland_lop.webp", personality: "溫順友善、愛撒嬌", trait: "下垂的大耳朵、可愛包子臉" },
+            { name: "獅子兔", img: "images/rabbits/lionhead.webp", personality: "聰明好學、膽小謹慎", trait: "頸部有長毛、像小獅子" },
+            { name: "安哥拉兔", img: "images/rabbits/english_angora.webp", personality: "安靜溫和、懶洋洋", trait: "全身長滿絲滑長毛" },
+            { name: "雷克斯兔", img: "images/rabbits/rex_rabbit.webp", personality: "聰明活潑、很有活力", trait: "天鵝絨般的短毛" },
+            { name: "紐西蘭兔", img: "images/rabbits/new_zealand_rabbit.webp", personality: "溫和穩定、容易相處", trait: "體型較大、純白毛色" },
+            { name: "佛萊明巨兔", img: "images/rabbits/flemish_giant.webp", personality: "溫和的巨人、冷靜", trait: "體型極大、耳朵長" },
+            { name: "喜馬拉雅兔", img: "images/rabbits/himalayan_rabbit.webp", personality: "脾氣極好、耐性強", trait: "身體白色、耳朵鼻子是深色" },
+            { name: "荷蘭兔", img: "images/rabbits/dutch_rabbit.webp", personality: "友善聰明、愛運動", trait: "臉部有白色V型花紋" },
+            { name: "侏儒海棠兔", img: "images/rabbits/dwarf_hotot.webp", personality: "頑皮愛玩、活泼", trait: "眼睛周圍有黑色眼圈" },
+            { name: "英國垂耳兔", img: "images/rabbits/english_lop.webp", personality: "溫順、喜歡安靜", trait: "耳朵極長、觸地" },
+            { name: "澤西羊毛兔", img: "images/rabbits/jersey_wooly.webp", personality: "溫柔安靜、容易照顧", trait: "小臉長毛、像玩偶" },
+            { name: "侏儒垂耳兔", img: "images/rabbits/mini_lop.webp", personality: "非常愛玩、親人", trait: "圓頭圓腦、垂耳" },
+            { name: "阿金特兔", img: "images/rabbits/argente_rabbit.webp", personality: "大膽活潑、好奇心強", trait: "銀灰色的毛色" },
+            { name: "比利時野兔", img: "images/rabbits/belgian_hare.webp", personality: "極其活潑、神經質", trait: "身形修長、像野兔" },
+            { name: "迷你雷克斯兔", img: "images/rabbits/mini_rex.webp", personality: "友善好動、愛乾淨", trait: "質感極佳的捲曲短毛" },
+            { name: "波蘭兔", img: "images/rabbits/polish_rabbit.webp", personality: "聰明、警戒心強", trait: "身形精瘦、立耳" },
+            { name: "銀貂兔", img: "images/rabbits/silver_marten.webp", personality: "獨立冷靜、忠誠", trait: "深色底毛配銀白色尖端" },
+            { name: "蘇門答臘兔", img: "images/rabbits/sumatran_rabbit.webp", personality: "害羞、神祕", trait: "獨特的條紋花紋" },
+            { name: "加利福尼亞兔", img: "images/rabbits/californian_rabbit.webp", personality: "溫和、穩定", trait: "黑耳黑鼻的白兔" },
+            { name: "金吉拉兔", img: "images/rabbits/chinchilla_rabbit.webp", personality: "聰明、愛撒嬌", trait: "像龍貓一樣的灰毛" },
+            { name: "維也納兔", img: "images/rabbits/vienna_rabbit.webp", personality: "活潑、友善", trait: "通常有藍色眼睛" },
+            { name: "哈瓦那兔", img: "images/rabbits/havana_rabbit.webp", personality: "安靜、溫順", trait: "深巧克力色皮毛" },
+            { name: "大丹兔", img: "images/rabbits/checkered_giant.webp", personality: "好動、需要空間", trait: "白底配黑色斑點" },
+            { name: "薩蘭德兔", img: "images/rabbits/sallander_rabbit.webp", personality: "溫和、容易親近", trait: "獨特的煙燻色調" },
+            { name: "阿拉斯加兔", img: "images/rabbits/alaska_rabbit.webp", personality: "活潑、警覺", trait: "全身純黑、發亮" },
+            { name: "英國點兔", img: "images/rabbits/english_spot.webp", personality: "充滿活力、愛跳躍", trait: "背部有條紋、側面有點點" },
+            { name: "美洲兔", img: "images/rabbits/american_rabbit.webp", personality: "溫順、穩定", trait: "曼陀林身形" },
+            { name: "小狐兔", img: "images/rabbits/mini_fox.webp", personality: "調皮、愛動", trait: "毛髮質地特殊" },
+            { name: "緞毛兔", img: "images/rabbits/satin_rabbit.webp", personality: "溫柔、安靜", trait: "毛髮有強烈光澤" }
+        ];
+
+        const grid = document.getElementById('petGrid');
+        
+        function renderPets(petList, type) {
+            grid.innerHTML = '';
+            petList.forEach(pet => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                let sound = '喵～';
+                if (type === 'dogs') sound = '汪！';
+                if (type === 'rabbits') sound = '（動耳朵）';
+                
+                card.innerHTML = `
+                    <div class="pet-avatar"><img src="${pet.img}" alt="${pet.name}"></div>
+                    <div class="cat-name">${pet.name}</div>
+                    <div class="cat-info">${pet.trait}</div>
+                    <div class="speech-bubble">
+                        我的個性是「${pet.personality}」喔！${sound}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            // Find the button that was clicked via the event object or text content
+            const clickedBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => 
+                (tab === 'cats' && btn.innerText.includes('喵')) || 
+                (tab === 'dogs' && btn.innerText.includes('汪')) ||
+                (tab === 'rabbits' && btn.innerText.includes('兔'))
+            );
+            if (clickedBtn) clickedBtn.classList.add('active');
+            
+            if (tab === 'cats') renderPets(cats, 'cats');
+            else if (tab === 'dogs') renderPets(dogs, 'dogs');
+            else renderPets(rabbits, 'rabbits');
+        }
+
+        // Initial render
+        renderPets(cats, 'cats');
+    </script>
+</body>
+</html>

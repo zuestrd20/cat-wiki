@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甜心秘書控制台 - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff8fb1;
+            --secondary: #ffcce1;
+            --dark: #4a4a4a;
+            --bg: #fff5f8;
+        }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg);
+            color: var(--dark);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        #login-container, #dashboard-container {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(255, 143, 177, 0.2);
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+        }
+        #dashboard-container { display: none; }
+        h1 { color: var(--primary); margin-bottom: 30px; }
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid var(--secondary);
+            border-radius: 15px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 20px;
+        }
+        button:hover { transform: scale(1.05); }
+        .section { margin-top: 40px; text-align: left; }
+        .card {
+            background: var(--bg);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border-left: 5px solid var(--primary);
+        }
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: white;
+            float: right;
+        }
+        .status-todo { background: #ff6b6b; }
+        .status-doing { background: #4dabf7; }
+        .status-done { background: #51cf66; }
+    </style>
+</head>
+<body>
+    <div id="login-container">
+        <h1>💖 甜心秘書登入 💖</h1>
+        <input type="text" id="username" placeholder="帳號">
+        <input type="password" id="password" placeholder="密碼">
+        <button onclick="login()">登入</button>
+    </div>
+
+    <div id="dashboard-container">
+        <h1>📊 甜心工作控制台</h1>
+        <div class="section">
+            <h3>📋 當前任務進度</h3>
+            <div id="task-list">
+                <div class="card"><span class="status-badge status-doing">進行中</span>建立控制台介面</div>
+                <div class="card"><span class="status-badge status-todo">待處理</span>串接即時資料</div>
+            </div>
+        </div>
+        <div class="section">
+            <h3>📜 最近活動紀錄</h3>
+            <div id="log-list">
+                <div class="card"><b>[系統]</b> 成功建立 Notion 資料庫連線</div>
+                <div class="card"><b>[技術]</b> 完成 100m 高空攝影任務</div>
+            </div>
+        </div>
+        <div class="section">
+            <h3>✍️ 交代新任務</h3>
+            <p>請直接在我們的 <a href="https://www.notion.so/df5887002d73458d810ae5597d3f7c66" target="_blank">Notion 任務清單</a> 中新增，甜心會定期去巡邏喔！💖</p>
+        </div>
+        <button onclick="logout()">登出</button>
+    </div>
+
+    <script>
+        function login() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if(user === 'jason' && pass === 'copy1234') {
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('dashboard-container').style.display = 'block';
+            } else {
+                alert('帳號或密碼錯誤喔，寶貝再想想？🥺');
+            }
+        }
+        function logout() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
